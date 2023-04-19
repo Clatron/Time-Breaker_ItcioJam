@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Breaker</title>
+
+    <link type="text/css" href="index.css" rel="stylesheet">
+</head>
+<body>
+    <img src="assets/ground.png" id="ground">
+    <div class="Menu UI">
+        <h1>Welcome to the<br><span>Time Breaker</span></h1>
+        <button id="startGame">Play</button>
+    </div>
+    <div class="RoundScreen UI">
+        <h1 id="round">Round 0</h1>
+        <h2 id="enemies">Total Enemies: 0</h2>
+    </div>
+    <div class="DeathScreen UI">
+        <h1>Game Over!</h1>
+        <button id="startGame">Main Menu</button>
+    </div>
+    <canvas id="main"></canvas>
+    <audio src="./assets/shoot.mp3" id="shoot"></audio>
+    <audio src="./assets/Time-Breaker-Theme.mp3" id="theme" loop></audio>
+    <script defer type="module" src="game.js"></script>
+</body>
+</html>

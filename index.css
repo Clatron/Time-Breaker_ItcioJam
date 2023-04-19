@@ -1,0 +1,100 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+
+    background-color: #606060;
+}
+
+h2 {
+    margin: 0;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+
+    shape-rendering: geometricPrecision;
+    image-rendering: pixelated;
+    text-rendering: optimizeLegibility;
+
+    border: 5px solid black;
+}
+
+.UI {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    text-align: center;
+    transition: all 1s;
+}
+
+.UI span {
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.UI button {
+    width: 15%;
+    height: 8%;
+
+    border: none;
+    border-radius: 10px;
+    background-color: #3f3f3f;
+    font-size: larger;
+    font-weight: bold;
+
+    transition: 1s all;
+}
+
+.UI button:hover {
+    cursor: pointer;
+    background-color: #303030;
+}
+
+.DeathScreen {
+    display: none;
+}
+
+.RoundScreen {
+    display: none;
+    filter: blur(0);
+    opacity: 1;
+}
+
+.Blur {
+    display: flex;
+    opacity: 0;
+    filter: blur(10px);
+}
+
+.Hide {
+    display: none;
+}
+
+.Show {
+    display: flex;
+}
+
+img {
+    display: none;
+}
