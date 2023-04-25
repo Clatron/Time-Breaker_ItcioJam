@@ -1,5 +1,7 @@
+const bullet = /** @type {HTMLImageElement} */ (document.querySelector('#bullet'));
+
 const WIDTH = 10;
-const HEIGHT = 5;
+const HEIGHT = 4;
 
 export default class Bullet {
     constructor(player, vx) {
@@ -14,6 +16,6 @@ export default class Bullet {
         this.x += this.vx;
     }
     draw(/** @type {CanvasRenderingContext2D} */ ctx) {
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        ctx.drawImage(bullet, 3, 6, WIDTH, HEIGHT, this.x, this.y, this.w, this.h);
     }
 }

@@ -15,20 +15,15 @@ export default class InputHandler {
         })
         window.addEventListener('keyup', (e) => {
             if (this.keys.includes(e.code)) {
-                if (e.code == "Space") {
-                    this.game.state[2] && (this.game.state[2] = 0);
+                if (e.code == "Space" && !shootDebounce) {
+                    shootDebounce = true;
+                    this.game.player.shoot();
+                    setTimeout(() => {
+                        shootDebounce = false;
+                    }, shootTime);
                 }
                 const index = this.keys.indexOf(e.code);
                 this.keys.splice(index, 1);
-            }
-        })
-        window.addEventListener('mouseup', (e) => {
-            if (!shootDebounce) {
-                shootDebounce = true;
-                this.game.player.shoot(e.x, e.y);
-                setTimeout(() => {
-                    shootDebounce = false;
-                }, shootTime);
             }
         })
     }

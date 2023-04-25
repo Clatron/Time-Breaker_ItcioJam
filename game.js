@@ -1,4 +1,3 @@
-/** @type {CanvasRenderingContext2D} */
 import Player from "./components/player.js";
 import Ground from "./components/ground.js";
 import InputHandler from "./hooks/inputHandler.js";
@@ -22,8 +21,9 @@ const GROUND_HEIGHT = 15;
 const KeyBindings = {
     "KeyD": "FORWARD",
     "KeyA": "BACKWARD",
-    "Space": "JUMPING",
+    "KeyW": "JUMPING",
     "ShiftLeft": "DASHING",
+    "KeyC": "SMASH",
 }
 
 ctx.width = WIDTH;
@@ -36,7 +36,7 @@ class Game {
         this.inputs = new InputHandler(this);
         this.player = new Player(this, playerWidth, playerHeight);
         this.ground = new Ground(this, GROUND_HEIGHT, this.height - playerHeight);
-        this.state = ["IDLE", "IDLE", 0, 0]; //x and y and JumpDebounce and DashDebounce
+        this.state = ["IDLE", "IDLE", 0, 0, "IDLE"]; //x and y and JumpDebounce and DashDebounce and Smashing
         this.score = 0;
         this.bestScore = 0;
         this.round = 1;
@@ -76,9 +76,12 @@ class Game {
             }
         }
 
-        if (this.inputs.keys.includes('Space') && this.state[1] == "IDLE" && this.state[2] == 0) {
-            this.state[1] = KeyBindings.Space;
+        console.log([this.state[1] != "IDLE", this.inputs.keys.includes('KeyC'), this.state[4] == "IDLE"]);
+        if (this.inputs.keys.includes('KeyW') && this.state[1] == "IDLE" && this.state[2] == 0) {
+            this.state[1] = KeyBindings.KeyW;
             this.state[2] = 1;
+        } else if (this.state[1] != "IDLE" && this.inputs.keys.includes('KeyC') && this.state[4] == "IDLE") {
+            this.state[4] = "SMASHING";
         }
     }
 }
@@ -86,18 +89,18 @@ class Game {
 const game = new Game(WIDTH, HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
 
 startGame[0].onclick = () => {
-    console.log("start");
     menu.classList.add('Hide');
     game.levelManager.startRound();
     animate();
     theme.play();
 }
 startGame[1].onclick = () => {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
     menu.classList.remove('Hide');
     deathscreen.classList.remove('Show');
 
     //Reset states
-    game.state = ["IDLE", "IDLE", 0, 0];
+    game.state = ["IDLE", "IDLE", 0, 0, "IDLE"];
 
     //Reset player & bullets
     game.player.reset();

@@ -27,8 +27,6 @@ canvas {
     shape-rendering: geometricPrecision;
     image-rendering: pixelated;
     text-rendering: optimizeLegibility;
-
-    border: 5px solid black;
 }
 
 .UI {

@@ -17,9 +17,28 @@ export default class Player {
         this.dashforce = 3;
         this.Bullets = [];
         this.isDead = false;
+        this.lastDir = "FORWARD";
+        this.smash = false;
     }
     update(state, keys) {
-        if (state[0] == "DASHING") {
+        if (state[4] == "SMASHING") {
+            if (this.smash) {
+                this.y += this.vy;
+
+                if (Math.floor(this.y) >= this.ground) {
+                    this.y = this.ground;
+                    this.game.state[4] = "IDLE";
+                    this.vy = 0;
+                    this.smash = false;
+                }
+            } else {
+                this.smash = true;
+                this.vy = this.jumpforce;
+                this.game.state[1] = "IDLE";
+                this.game.state[2] = 0;
+            }
+        }
+        else if (state[0] == "DASHING") {
             (keys.includes('KeyA')) ? this.vx = -this.dashforce : this.vx = this.dashforce;
             setTimeout(() => {
                 this.game.state[3] = 1
@@ -28,12 +47,18 @@ export default class Player {
                 }, 1500)
             }, 150)
         } else {
-            if (state[0] == "FORWARD") this.vx = 0.5;
-            else if (state[0] == "BACKWARD") this.vx = -0.5;
+            if (state[0] == "FORWARD") {
+                this.vx = 0.5;
+                this.lastDir = "FORWARD";
+            }
+            else if (state[0] == "BACKWARD") {
+                this.vx = -0.5;
+                this.lastDir = "BACKWARD";
+            }
             else this.vx = 0;
         }
 
-        if (state[1] == "JUMPING") {
+        if (state[1] == "JUMPING" && state[4] != "SMASHING") {
             if (this.y == this.ground) {
                 this.vy = this.jumpforce;
                 this.y -= this.vy;
@@ -43,14 +68,15 @@ export default class Player {
                 this.vy -= this.weight;
                 if (Math.floor(this.vy) == 0) this.game.state[1] = "FALLING";
             }
-        } else if (state[1] == "FALLING") {
+        } else if (state[1] == "FALLING"  && state[4] != "SMASHING") {
             this.y -= this.vy;
             this.vy -= this.weight;
             if (Math.floor(this.y) == this.ground) {
                 this.y = this.ground;
-                this.game.state[1] = "DEBOUNCE"
+                this.game.state[1] = "DEBOUNCE";
 
                 setTimeout(() => {
+                    this.game.state[2] = 0;
                     this.game.state[1] = "IDLE";
                 }, 100)
             }
@@ -77,13 +103,17 @@ export default class Player {
         ctx.fillRect(this.x, this.y, this.w, this.h);
         this.Bullets.forEach(b => b.draw(ctx))
     }
-    shoot(x, y) {
-        let xInCanvas = (this.game.width * x) / window.innerWidth;
+    shoot() {
         let playerMiddle = this.x + (this.w / 2);
-        let vx = 0;
+        let vx = 3;
 
-        if (xInCanvas < playerMiddle) vx = -1
-        else vx = 1
+        if (this.game.state[0] == "FORWARD") {
+            vx = 3;
+        } else if (this.game.state[0] == "BACKWARD") {
+            vx = -3;
+        } else {
+            (this.lastDir == "FORWARD") ? vx = 3 : vx = -3;
+        }
 
         this.Bullets.push(new Bullet(this, vx));
         shooteffect.play();

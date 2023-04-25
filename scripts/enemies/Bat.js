@@ -13,9 +13,11 @@ export default class Bat {
         this.isRecovering = false;
         this.isLocked = false;
         this.isDead = false;
+        this.isStunned = false;
+        this.stunTimeout = 2000;
     }
     update(player) {
-        if (this.isGrounded) {
+        if (this.isGrounded && !this.isStunned) {
             if (this.x > player.x) {
                 this.x -= this.vx
             } else {
@@ -35,9 +37,16 @@ export default class Bat {
                 this.isRecovering = true;
             }
         }
-
-        if (player.x < this.x + this.w && player.x + player.w > this.x && player.y < this.y + this.h && player.y + player.h > this.y) {
-            player.isDead = true;
+        
+        if (!this.isStunned && player.x < this.x + this.w && player.x + player.w > this.x && player.y < this.y + this.h && player.y + player.h > this.y) {
+            if (!player.smash) {
+                player.isDead = true;
+            } else {
+                this.isStunned = true;
+                setTimeout(() => {
+                    this.isStunned = false;
+                }, this.stunTimeout);
+            }
         }
 
         player.Bullets.forEach(b => {
