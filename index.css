@@ -96,3 +96,8 @@ canvas {
 img {
     display: none;
 }
+
+ul {
+    text-align: left;
+    font-size: large;
+}

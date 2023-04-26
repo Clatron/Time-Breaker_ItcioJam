@@ -1,4 +1,5 @@
 import Bullet from "../objects/bullet.js";
+const playerText = document.querySelector('#player');
 const shooteffect = /** @type {HTMLAudioElement} */ (document.querySelector('#shoot'));
 shooteffect.volume = .4;
 
@@ -8,8 +9,8 @@ export default class Player {
         this.w = width;
         this.h = height;
         this.x = this.game.width / 2 - this.w / 2;
-        this.y = game.height - this.h * 2;
-        this.ground = game.height - this.h * 2;
+        this.y = game.height - (15 + height);
+        this.ground = game.height - (15 + height);
         this.vx = 0;
         this.vy = 0;
         this.weight = 0.05;
@@ -19,6 +20,14 @@ export default class Player {
         this.isDead = false;
         this.lastDir = "FORWARD";
         this.smash = false;
+        this.frame = 0;
+        setInterval(() => {
+            if (this.frame == 3) {
+                this.frame = 0;
+            } else {
+                this.frame += 1;
+            }
+        }, 250);
     }
     update(state, keys) {
         if (state[4] == "SMASHING") {
@@ -100,11 +109,15 @@ export default class Player {
         });
     }
     draw(/** @type {CanvasRenderingContext2D} */ ctx) {
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        if (this.game.state[0] == "IDLE") {
+            ctx.drawImage(playerText, 0, 0, 15, 30, this.x, this.y, this.w, this.h);
+        } else {
+            ctx.drawImage(playerText, this.w * this.frame, 30, 15, 30, this.x, this.y, this.w, this.h);
+        }
+        //ctx.fillRect(this.x, this.y, this.w, this.h);
         this.Bullets.forEach(b => b.draw(ctx))
     }
     shoot() {
-        let playerMiddle = this.x + (this.w / 2);
         let vx = 3;
 
         if (this.game.state[0] == "FORWARD") {

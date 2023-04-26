@@ -15,7 +15,7 @@ ctx.font = "10px Arial";
 const WIDTH = 300;
 const HEIGHT = 150;
 const PLAYER_WIDTH = 15;
-const PLAYER_HEIGHT = 15;
+const PLAYER_HEIGHT = 30;
 const GROUND_HEIGHT = 15;
 
 const KeyBindings = {
@@ -35,7 +35,7 @@ class Game {
         this.height = height;
         this.inputs = new InputHandler(this);
         this.player = new Player(this, playerWidth, playerHeight);
-        this.ground = new Ground(this, GROUND_HEIGHT, this.height - playerHeight);
+        this.ground = new Ground(this, GROUND_HEIGHT, this.height - GROUND_HEIGHT);
         this.state = ["IDLE", "IDLE", 0, 0, "IDLE"]; //x and y and JumpDebounce and DashDebounce and Smashing
         this.score = 0;
         this.bestScore = 0;

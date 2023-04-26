@@ -7,7 +7,7 @@ export default class Bullet {
     constructor(player, vx) {
         this.player = player;
         this.x = player.x;
-        this.y = player.y;
+        this.y = player.y + 10;
         this.vx = vx;
         this.w = WIDTH;
         this.h = HEIGHT;

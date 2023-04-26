@@ -1,3 +1,4 @@
+const batText = document.querySelector('#bat');
 const RECOVER_TIME = 1500;
 
 export default class Bat {
@@ -15,6 +16,10 @@ export default class Bat {
         this.isDead = false;
         this.isStunned = false;
         this.stunTimeout = 2000;
+        this.swing = 0;
+        setInterval(() => {
+            this.swing = !this.swing;
+        }, 250)
     }
     update(player) {
         if (this.isGrounded && !this.isStunned) {
@@ -59,6 +64,10 @@ export default class Bat {
         });
     }
     draw(/** @type {CanvasRenderingContext2D} */ ctx) {
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        if (this.isGrounded) {
+            ctx.drawImage(batText, 5 + (this.swing * 24), 23, 14, 10, this.x, this.y, 14, this.h);
+        } else {
+            ctx.drawImage(batText, 4, 4, 14, 12, this.x, this.y, 14, this.h);
+        }
     }
 }

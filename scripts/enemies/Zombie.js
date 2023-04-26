@@ -1,3 +1,5 @@
+const zombieText = document.querySelector('#zombie');
+
 export default class Zombie {
     constructor(game, x, ground) {
         this.w = 15
@@ -8,12 +10,23 @@ export default class Zombie {
         this.isDead = false;
         this.isStunned = false;
         this.stunTimeout = 2000;
+        this.directionRight = false;
+        this.frame = 0;
+        setInterval(() => {
+            if (this.frame == 2) {
+                this.frame = 0
+            } else {
+                this.frame++;
+            }
+        }, 333);
     }
     update(player) {
         if (!this.isStunned) {
             if (this.x > player.x) {
+                this.directionRight = false;
                 this.x -= this.vx
             } else {
+                this.directionRight = true;
                 this.x += this.vx;
             }
         }
@@ -39,6 +52,7 @@ export default class Zombie {
         });
     }
     draw(/** @type {CanvasRenderingContext2D} */ ctx) {
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        ctx.drawImage(zombieText, 10 + (this.frame * 15), (this.directionRight * 24), 15, 28, this.x, this.y + 3, this.w, this.h);
+        //ctx.fillRect(this.x, this.y, this.w, this.h);
     }
 }
